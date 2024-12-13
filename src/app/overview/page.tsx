@@ -9,6 +9,7 @@ import { Navbar } from '../../components/Navbar'
 import { Sidebar } from '../../components/Sidebar'
 
 const timeIntervals = [
+  { value: '30s', label: '30 seconds' },
   { value: '5m', label: '5 minutes' },
   { value: '15m', label: '15 minutes' },
   { value: '30m', label: '30 minutes' },
@@ -127,7 +128,9 @@ export default function Overview() {
   const handleConfirm = () => {
     // Parse timeframe to get total seconds
     let totalSeconds = 0
-    if (jobDetails.timeframe.includes('minutes')) {
+    if (jobDetails.timeframe.includes('seconds')) {
+      totalSeconds = 30  // For 30 seconds option
+    } else if (jobDetails.timeframe.includes('minutes')) {
       const minutes = parseInt(jobDetails.timeframe.split(' ')[0])
       totalSeconds = minutes * 60
     } else if (jobDetails.timeframe.includes('hour')) {
