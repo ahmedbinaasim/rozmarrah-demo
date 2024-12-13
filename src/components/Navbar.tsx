@@ -31,13 +31,15 @@ export function Navbar() {
             </span>
           </button>
           <div className="flex items-center gap-2">
+            <div className = "overflow-hidden rounded-full w-[40px] h-[40px]">
             <Image
               src="/pfp.jpeg"
               alt="Profile"
               width={40}
               height={40}
-              className="rounded-full"
+              className=""
             />
+            </div>
             <div className="hidden md:block">
               <span className="flex items-center gap-2">
                 Hi! Ali
