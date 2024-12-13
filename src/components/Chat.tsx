@@ -15,6 +15,7 @@ type Message = {
 
 // Updated time intervals starting with 5 minutes
 const timeIntervals = [
+  { value: '30s', label: '30 seconds' },
   { value: '5m', label: '5 minutes' },
   { value: '15m', label: '15 minutes' },
   { value: '30m', label: '30 minutes' },
@@ -130,15 +131,29 @@ export function Chat() {
   const handleTimeSelect = (time: string) => {
     const finalResponses = [...userResponses, time]
     localStorage.setItem('jobResponses', JSON.stringify(finalResponses))
-    localStorage.setItem('selectedTimeframe', time)
     
+    // Parse time to seconds
+    let totalSeconds = 0;
+    if (time.includes('seconds')) {
+      totalSeconds = 30;
+    } else if (time.includes('minutes')) {
+      const minutes = parseInt(time.split(' ')[0])
+      totalSeconds = minutes * 60
+    } else if (time.includes('hour')) {
+      const [hours, minutesPart] = time.split(' hour')
+      totalSeconds = (parseInt(hours) * 3600) + 
+        (minutesPart ? parseInt(minutesPart.split(' ')[1]) * 60 : 0)
+    }
+    
+    localStorage.setItem('selectedTimeframe', totalSeconds.toString())
+      
     setMessages(prev => [...prev, {
       id: Date.now(),
       text: time,
       sender: 'user',
       timestamp: new Date().toLocaleTimeString()
     }])
-    
+      
     setIsLoading(true)
     setTimeout(() => {
       router.push('/overview')
